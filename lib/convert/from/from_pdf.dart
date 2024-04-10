@@ -391,4 +391,94 @@ class FromPdfMethods {
       throw Exception('Error converting file: $e');
     }
   }
+
+  /// Convert PDF to Compression
+  /// The API for converting PDF documents to Text files.
+  /// Read more about the converter here: https://www.convertapi.com/pdf-to-docx
+  Future<ConvertApiResponse> toCompress({
+    /// File to convert
+    required File file,
+
+    /// Store converted file on our secure server and provides download URL.
+    bool storeFile = false,
+
+    /// Converted output file name without extension. The extension will be added automatically.
+    String? fileName,
+
+    /// Sets the password to open protected documents.
+    String? password,
+
+    /// Conversion timeout in seconds.
+    int timeout = 600,
+
+    /// Enable optical character recognition(OCR).
+    bool enableOcr = true,
+
+    /// Set page range. Example 1-10 or 1,2,5. Default is 1-2000.
+    String pageRange = '1-2000',
+  }) async {
+    final formData = FormData.fromMap({
+      'StoreFile': storeFile,
+      'File': await MultipartFile.fromFile(
+        file.path,
+        // filename: (file.path.split('/').last).split('.').first,
+        filename: file.path.split('/').last,
+        contentType: MediaType('application', 'pdf'),
+      ),
+      'FileName': fileName ?? (file.path.split('/').last).split('.').first,
+      'Timeout': timeout.toString(),
+      'Password': password ?? '',
+      'Presets': 'none',
+      'ColorImageCompression': 'jpg',
+      'ColorImageQuality': 50,
+      'ColorImageDownsample': false,
+      'ColorImageThresholdDpi': 200,
+      'ColorImageResampleDpi': 150,
+      'GrayscaleImageCompression': 'jpg',
+      'GrayscaleImageQuality': 50,
+      'GrayscaleImageDownsample': false,
+      'GrayscaleImageThresholdDpi': 200,
+      'MonochromeImageCompression': 'jbig2l',
+      'MonochromeImageQuality': 5,
+      'MonochromeImageDownsample': false,
+      'MonochromeImageThresholdDpi': 200,
+      'MonochromeImageResampleDpi': 150,
+      'UnembedBaseFonts': false,
+      'SubsetEmbeddedFonts': false,
+      'RemoveBookmarks': false,
+      'RemoveAnnotations': false,
+      'RemoveForms': false,
+      'RemovePageLabels': false,
+      'RemoveLayers': false,
+      'RemoveArticleThreads': false,
+      'RemoveTaggedInfo': true,
+      'RemovePageThumbnails': true,
+      'RemoveDuplicates': true,
+      'RemoveAlternateImages': true,
+      'RemoveNamedDestinations': false,
+      'RemoveEmbeddedFiles': true,
+      'RemovePieceInformation': true,
+      'CreateObjectStreams': true,
+      'Optimize': true,
+      'LzwToFlate': true,
+      'Linearize': false,
+      'PreservePdfa': true,
+    });
+
+    try {
+      final response = await client.post(
+        path: '/convert/pdf/to/compress',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return ConvertSuccessResponse.fromMap(response.data);
+      } else {
+        throw Exception(
+            'Error ${response.statusCode}: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Error converting file: $e');
+    }
+  }
 }
