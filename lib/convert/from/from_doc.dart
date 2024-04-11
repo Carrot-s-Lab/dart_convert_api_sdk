@@ -85,9 +85,9 @@ class FromDocMethods {
     }
   }
 
-  /// Convert DOC to JPG
-  /// The API for converting Word documents to Text files.
-  /// Read more about the converter here: https://www.convertapi.com/doc-to-jpg
+  /// Convert DOCX to JPG
+  /// The API for converting PDF documents to Text files.
+  /// Read more about the converter here: https://www.convertapi.com/pdf-to-jpg
   Future<ConvertApiResponse> toJpg({
     /// File to convert
     required File file,
@@ -102,50 +102,49 @@ class FromDocMethods {
     String? password,
 
     /// Conversion timeout in seconds.
-    int timeout = 900,
+    int timeout = 600,
 
-    /// Replace similar symbols with their counterparts in a text file, such as a copyright symbol with (c).
-    bool substitutions = false,
+    /// Enable optical character recognition(OCR).
+    bool enableOcr = true,
 
-    /// Inserts line breaks at the end of each line of text.
-    bool lineBreaks = true,
+    /// Persist formatting while extracting text. Only works when RemoveHeadersFooters and RemoveFootnotes properties are disabled.
+    bool includeFormatting = false,
 
-    /// Specifies what encoding the parser should use when converting text files.
-    TextEncoding textEncoding = TextEncoding.auto,
+    /// Set page range. Example 1-10 or 1,2,5. Default is 1-2000.
+    String pageRange = '1-2000',
 
-    /// Set end of line character. The character which will be used to break lines.
-    EndLineChar endLineChar = EndLineChar.crlf,
+    /// Remove tables from the document.
+    bool removeTables = true,
 
-    /// Specifies the format to use when saving a document.
-    SaveFormat saveFormat = SaveFormat.unicodetext,
+    /// Remove footnotes from the document.
+    bool removeFootnotes = true,
+
+    /// Remove headers and footers from the document.
+    bool removeHeadersFooters = true,
   }) async {
     final formData = FormData.fromMap({
-      'Timeout': timeout.toString(),
-      'FileName': fileName ?? (file.path.split('/').last).split('.').first,
-      'Password': password ?? '',
+      'StoreFile': storeFile,
       'File': await MultipartFile.fromFile(
         file.path,
+        // filename: (file.path.split('/').last).split('.').first,
         filename: file.path.split('/').last,
-        contentType: MediaType(
-          'application',
-          'msword',
-        ),
+        contentType: MediaType('application', 'msword'),
       ),
-      'StoreFile': storeFile,
-      'PageRange': 2000,
-      'ImageResolution': 200,
-      'ScaleProportions': true,
-      'ImageHeight': 600,
-      'ImageWidth': 400,
-      'ImageAntialiasing': 8,
-      'Rotate': 0,
-      'ImageQuality': 75,
-      'ColorSpace': 'default',
+      'FileName': fileName ?? (file.path.split('/').last).split('.').first,
+      'Timeout': timeout.toString(),
+      'Password': password ?? '',
+      'PageRange': pageRange,
+      'OcrLanguage': 'automatic',
+      'EnableOcr': enableOcr.toString(),
+      'IncludeFormatting': includeFormatting.toString(),
+      'RemoveHeadersFooters': removeHeadersFooters.toString(),
+      'RemoveFootnotes': removeFootnotes.toString(),
+      'RemoveTables': removeTables.toString(),
     });
 
     try {
       final response = await client.post(
-        path: '/convert/doc/to/jpg/',
+        path: '/convert/doc/to/jpg',
         data: formData,
       );
 
