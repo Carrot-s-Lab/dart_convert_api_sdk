@@ -332,7 +332,7 @@ class FromPdfMethods {
     }
   }
 
-  /// Convert PDF to OCR
+  /// Convert PDF to Xlsx
   /// The API for converting PDF documents to Text files.
   /// Read more about the converter here: https://www.convertapi.com/pdf-to-docx
   Future<ConvertApiResponse> toXlsx({
