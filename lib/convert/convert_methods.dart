@@ -1,5 +1,6 @@
 import '../client/convert_http_client.dart';
 import 'from/from_docx.dart';
+import 'from/from_jpeg.dart';
 import 'from/from_pdf.dart';
 import 'from/from_xlsx.dart';
 
@@ -10,10 +11,12 @@ class ConvertMethods {
     pdf = FromPdfMethods(client);
     docx = FromDocxMethods(client);
     xlsx = FromXlsxMethods(client);
+    jpeg = FromJpegMethods(client);
   }
 
   // From A To B Methods
   late final FromPdfMethods pdf;
   late final FromDocxMethods docx;
   late final FromXlsxMethods xlsx;
+  late final FromJpegMethods jpeg;
 }
