@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'convert_api_response.dart';
 import 'file_response.dart';
 
@@ -48,13 +46,6 @@ class ConvertSuccessResponse extends ConvertApiResponse {
 
   @override
   String toString() => 'ConvertSuccessResponse(conversionCost: $conversionCost, files: $files)';
-
-  @override
-  bool operator ==(covariant ConvertSuccessResponse other) {
-    if (identical(this, other)) return true;
-
-    return other.conversionCost == conversionCost && listEquals(other.files, files);
-  }
 
   @override
   int get hashCode => conversionCost.hashCode ^ files.hashCode;
