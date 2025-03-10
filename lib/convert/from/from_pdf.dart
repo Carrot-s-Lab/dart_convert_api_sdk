@@ -103,23 +103,9 @@ class FromPdfMethods {
     /// Conversion timeout in seconds.
     int timeout = 600,
 
-    /// Enable optical character recognition(OCR).
-    bool enableOcr = true,
-
-    /// Persist formatting while extracting text. Only works when RemoveHeadersFooters and RemoveFootnotes properties are disabled.
-    bool includeFormatting = false,
-
     /// Set page range. Example 1-10 or 1,2,5. Default is 1-2000.
     String pageRange = '1-2000',
 
-    /// Remove tables from the document.
-    bool removeTables = true,
-
-    /// Remove footnotes from the document.
-    bool removeFootnotes = true,
-
-    /// Remove headers and footers from the document.
-    bool removeHeadersFooters = true,
   }) async {
     final formData = FormData.fromMap({
       'StoreFile': storeFile,
@@ -133,12 +119,7 @@ class FromPdfMethods {
       'Timeout': timeout.toString(),
       'Password': password ?? '',
       'PageRange': pageRange,
-      'OcrLanguage': 'automatic',
-      'EnableOcr': enableOcr.toString(),
-      'IncludeFormatting': includeFormatting.toString(),
-      'RemoveHeadersFooters': removeHeadersFooters.toString(),
-      'RemoveFootnotes': removeFootnotes.toString(),
-      'RemoveTables': removeTables.toString(),
+      
     });
 
     try {

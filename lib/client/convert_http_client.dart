@@ -16,6 +16,9 @@ class ConvertHttpClient {
         baseUrl: 'https://v2.convertapi.com',
         connectTimeout: const Duration(milliseconds: 5000),
         receiveTimeout: const Duration(seconds: 1200),
+        queryParameters: {
+          'secret': apiSecret,
+        },
         headers: {
           'Authorization': 'Basic $encodedCredentials',
           'Content-Type': 'multipart/form-data',
